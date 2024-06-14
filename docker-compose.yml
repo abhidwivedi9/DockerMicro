@@ -1,0 +1,38 @@
+version: '2.2'  # Updated to a valid version
+
+services:
+
+  product-service:
+    image: productservice:latest
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/fprog
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=yourpassword
+      - EUREKA_SERVER_URL=http://eureka-server:8761/eureka
+    networks:
+      - eureka-network
+    depends_on:
+      - mysql-container
+      - eureka-server
+      
+  mysql-container:
+    image: mysql:latest
+    environment:
+      - MYSQL_DATABASE=fprog
+      - MYSQL_ROOT_PASSWORD=yourpassword  # Added this line
+    networks:
+      - eureka-network
+
+  eureka-server:
+    image: eurekaserver:latest
+    ports:
+      - "8761:8761"
+    networks:
+      - eureka-network
+
+networks:
+  eureka-network:
+    external: true
+    name: eureka-network  # Fixed spacing issue

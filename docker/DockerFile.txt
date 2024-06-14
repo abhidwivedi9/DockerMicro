@@ -1,0 +1,16 @@
+                              
+# Set the working directory in the container
+WORKDIR /app
+
+# Copy the Maven build files to the container
+COPY pom.xml ./
+COPY src ./src
+
+# Package the application
+RUN ./mvnw clean package
+
+# Expose port 8080
+EXPOSE 8080
+
+# Run the application
+ENTRYPOINT ["java", "-jar", "target/firstprog-0.0.1-SNAPSHOT.jar"]

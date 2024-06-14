@@ -1,0 +1,38 @@
+version: '3'
+services:
+  eureka-server:
+    image: eurekaserver:latest
+    ports:
+      - "8761:8761"
+    networks:
+      - eureka-network
+
+  product-service:
+    image: productservice:latest
+    environment:
+      - EUREKA_SERVER_URL=http://eureka-server:8761/eureka
+    ports:
+      - "8080:8080"
+    networks:
+      - eureka-network
+
+  user-service:
+    image: userservice:latest
+    environment:
+      - EUREKA_SERVER_URL=http://eureka-server:8761/eureka
+    ports:
+      - "8081:8081"
+    networks:
+      - eureka-network
+
+  order-service:
+    image: orderservice:latest
+    environment:
+      - EUREKA_SERVER_URL=http://eureka-server:8761/eureka
+    ports:
+      - "8082:8082"
+    networks:
+      - eureka-network
+
+networks:
+  eureka-network:
